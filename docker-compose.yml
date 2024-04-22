@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: 'python manage.py runserver 0.0.0.0:8000'
+    volumes:
+      - ./src:/app
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=postgres-db
+      - DEBUG=true
+      - DB_NAME=brandquad
+      - DB_USER=brandquad
+      - DB_PASSWORD=brandquad
+      - DB_PORT=5432
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    image: postgres:14-alpine
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=brandquad
+      - POSTGRES_PASSWORD=brandquad
+    ports:
+      - '5432:5432'
+
+volumes:
+  postgres:
